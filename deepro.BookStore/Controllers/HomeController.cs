@@ -4,9 +4,14 @@ namespace deepro.BookStore.Controllers
 {
     public class HomeController : Controller
     {
-        public string Index()
+        public ViewResult Index()
         {
-            return "deeoro";
+            return View();
+        }
+
+        public ViewResult AboutUs()
+        {
+            return View();
         }
     }
 }
