@@ -2,6 +2,7 @@
 using deepro.BookStore.Repository;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 
 namespace deepro.BookStore.Controllers
@@ -16,12 +17,14 @@ namespace deepro.BookStore.Controllers
         public ViewResult GetAllBooks()
         {
             var data =  _bookRepository.GetAllBooks();
-            return View();
+            return View(data);
         }
 
-        public BookModel GetBook(int id)
+        public ViewResult GetBook(int id)
         {
-            return _bookRepository.GetBookById(id);
+
+            var data =  _bookRepository.GetBookById(id);
+            return View(data);
         }
 
         public List<BookModel> SearchBooks(string bookName, string aothorName)
