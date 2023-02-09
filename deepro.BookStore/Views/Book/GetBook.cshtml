@@ -1,10 +1,13 @@
-﻿@using deepro.BookStore.Models
-@model BookModel
+﻿@{
+    ViewData["Title"] = "Book Details " + Model.book.Title;
+}
+
+@*@model BookModel*@
 
 
 
 <div class="container">
-    <h3 class="display-4">Book Details</h3>
+    <h3 class="display-4">Book Details @Model.Name</h3>
     <div class="row">
         <div class="col-md-6">
             <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
@@ -49,20 +52,20 @@
         <div class="col-md-6">
             <div class="row">
                 <div class="col-md-12">
-                    <h1>@Model.Title</h1>
+                    <h1>@Model.book.Title</h1>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12 text-primary">
                     <span class="label label-primary">By: </span>
-                    <span class="monospaced">@Model.Author</span>
+                    <span class="monospaced">@Model.book.Author</span>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-12">
                     <p class="description">
-                        @Model.Description
+                        @Model.book.Description
                     </p>
                 </div>
             </div>
@@ -75,9 +78,9 @@
             <hr />
 
             <ul class="list-group">
-                <li class="list-group-item"><span class="font-weight-bold">Catagory - </span>@Model.Category</li>
-                <li class="list-group-item"><span class="font-weight-bold">Total Page - </span>@Model.TotalPage</li>
-                <li class="list-group-item"><span class="font-weight-bold">Language - </span>@Model.Language</li>
+                <li class="list-group-item"><span class="font-weight-bold">Catagory - </span>@Model.book.Category</li>
+                <li class="list-group-item"><span class="font-weight-bold">Total Page - </span>@Model.book.TotalPage</li>
+                <li class="list-group-item"><span class="font-weight-bold">Language - </span>@Model.book.Language</li>
             </ul> 
         </div>
     </div>
@@ -85,7 +88,7 @@
 
 <hr />
 
-<div class="py-5 bg-light">
+<div class="py-5 bg-light" id="simillerBook">
     <h3 class="h3">Similar book</h3>
     <div class="row">
         @for (int i = 0; i < 5; i++)
@@ -94,13 +97,13 @@
                 <div class="card mb-4 shadow-sm">
                     <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns=""></svg>
                     <div class="card-body">
-                        <h3 class="card-title">@Model.Title</h3>
-                        <p class="card-text">@Model.Description</p>
+                        <h3 class="card-title">@Model.book.Title</h3>
+                        <p class="card-text">@Model.book.Description</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
-                                <a href="/book/getbook/@Model.Id" class="btn btn-sm btn-outline-secondary">View Details</a>
+                                <a href="/book/getbook/@Model.book.Id" class="btn btn-sm btn-outline-secondary">View Details</a>
                             </div>
-                            <small class="text-muted">@Model.Author</small>
+                            <small class="text-muted">@Model.book.Author</small>
                         </div>
                     </div>
                 </div>

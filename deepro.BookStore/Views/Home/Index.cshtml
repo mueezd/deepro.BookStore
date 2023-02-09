@@ -1,7 +1,11 @@
-﻿
+﻿@*@{
+    ViewData["Title"] = "Home";
+}*@
 <section class="jumbotron text-center"> 
     <div class="container">
-        <h1>Welcome to BookStore Appliection</h1>
+        <h1>Welcome to BookStore Appliection </h1>
+        <h1>@ViewData["hTitle"]</h1>
+
         <p class="lead text-muted">
             It is a long established fact that a reader will be distracted by the readable content of a 
             page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less 
@@ -63,7 +67,7 @@
 @section scripts{
     <script>
         $(document).ready(function () {
-            alert("Document is ready");
+            //alert("Document is ready");
         });
     </script>
 }

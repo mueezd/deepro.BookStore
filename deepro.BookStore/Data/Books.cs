@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace deepro.BookStore.Models
+﻿namespace deepro.BookStore.Data
 {
-    public class BookModel
+    public class Books
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -11,8 +9,5 @@ namespace deepro.BookStore.Models
         public string Category { get; set; }
         public string Language { get; set; }
         public int TotalPage { get; set; }
-        public DateTime? CreatedOn { get; set; }
-        public DateTime? UpdatedOn { get; set; }
-
     }
 }

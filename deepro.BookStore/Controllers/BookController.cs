@@ -2,6 +2,7 @@
 using deepro.BookStore.Repository;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 
@@ -20,16 +21,30 @@ namespace deepro.BookStore.Controllers
             return View(data);
         }
 
+        [Route("book-details/{id}", Name = "bookDetails")]
         public ViewResult GetBook(int id)
         {
-
-            var data =  _bookRepository.GetBookById(id);
+            dynamic data = new ExpandoObject();
+            data.book = _bookRepository.GetBookById(id);
+            data.Name = "Deepro";
+            //var data =  
             return View(data);
         }
-
         public List<BookModel> SearchBooks(string bookName, string aothorName)
         {
             return _bookRepository.SearchBook(bookName, aothorName);
+        }
+
+
+        public ViewResult AddNewBook()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ViewResult AddNewBook(BookModel bookModel)
+        {
+            return View();
         }
     }
 }

@@ -1,4 +1,7 @@
-﻿@using deepro.BookStore.Models
+﻿@{
+    ViewData["Title"] = "All books";
+}
+
 @model IEnumerable<BookModel>
 
 
@@ -6,7 +9,6 @@
 <div class="container">
     <h3 class="display-4">All Books</h3>
     <div class="row">
-
         @foreach (var book in Model)
         {
             <div class="col-md-4">
@@ -17,7 +19,8 @@
                         <p class="card-text">@book.Description</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
-                                <a href="/book/getbook/@book.Id" class="btn btn-sm btn-outline-secondary">View Details</a>
+                                <a asp-route="bookDetails" asp-route-id="@book.Id"
+                                class="btn btn-sm btn-outline-secondary">View Details</a>
                             </div>
                             <small class="text-muted">@book.Author</small>
                         </div>
@@ -25,8 +28,6 @@
                 </div>
             </div>
         }
-
-        
     </div>
 </div>
 
