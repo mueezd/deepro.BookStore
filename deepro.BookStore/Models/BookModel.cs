@@ -5,6 +5,9 @@ namespace deepro.BookStore.Models
 {
     public class BookModel
     {
+        [DataType(DataType.Date)]
+        [Display(Name ="Choose Date")]
+        public string MyField { get; set; }
         public int Id { get; set; }
         [StringLength(100, MinimumLength = 5)]
         [Required(ErrorMessage ="Please Enter Title of your book")]
@@ -13,6 +16,7 @@ namespace deepro.BookStore.Models
         public string Author { get; set; }
         public string Description { get; set; }
         public string Category { get; set; }
+        [Required]
         public string Language { get; set; }
         [Required(ErrorMessage ="Please enter the total pages")]
         public int? TotalPage { get; set; }

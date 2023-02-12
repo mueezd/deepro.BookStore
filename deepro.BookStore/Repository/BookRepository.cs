@@ -25,6 +25,7 @@ namespace deepro.BookStore.Repository
                 CreatedOn = DateTime.UtcNow,
                 Description = model.Description,
                 Title = model.Title,
+                Language= model.Language,
                 TotalPage = model.TotalPage.HasValue ? model.TotalPage.Value: 0,
                 UpdatedOn = DateTime.UtcNow
             };

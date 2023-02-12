@@ -38,6 +38,21 @@ namespace deepro.BookStore.Controllers
 
         public ViewResult AddNewBook(bool isSuccess = false, int bookId = 0)
         {
+            //var model = new BookModel()
+            //{
+            //    Language= "English"
+            //};
+
+
+            ViewBag.language = new List<string>()
+            {
+                "English",
+                "Banhla",
+                "Hindi",
+                "Spanish",
+                "French"
+            };
+
             ViewBag.IsSuccess = isSuccess;
             ViewBag.BookId = bookId;
             return View();
@@ -55,8 +70,21 @@ namespace deepro.BookStore.Controllers
                     return RedirectToAction(nameof(AddNewBook), new { isSuccess = true, bookId = id });
                 }
             }
+
+            ViewBag.language = new List<string>()
+            {
+                "English",
+                "Banhla",
+                "Hindi",
+                "Spanish",
+                "French"
+            };
+
+
             ViewBag.IsSuccess = false;
             ViewBag.BookId = 0;
+
+            //ModelState.AddModelError("", "This is my customer error message");
             return View();
         }
     }
