@@ -1,4 +1,5 @@
-﻿@model BookModel
+﻿@using deepro.BookStore.Enums
+@model BookModel
 
 @{
     ViewData["Title"] = "Add New Book";
@@ -20,9 +21,11 @@
     <form method="post" asp-action="AddNewBook" asp-controller="Book">
         <div asp-validation-summary="All" class="text-danger"></div>
         <div class="form-group">
-            <label asp-for="Language"></label>
-            <select asp-for="Language" class="form-control" asp-items="new SelectList(ViewBag.language)"></select>
-            <span asp-validation-for="Language" class="text-danger"></span>
+            <label asp-for="LanguageId"></label>
+            <select asp-for="LanguageId" class="form-control" asp-items="Html.GetEnumSelectList<LanguaageEnum>()">
+                <option>Please choose your language</option>
+            </select>
+            <span asp-validation-for="LanguageId" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="Title"></label>

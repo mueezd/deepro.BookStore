@@ -1,4 +1,6 @@
-﻿using System;
+﻿using deepro.BookStore.Enums;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace deepro.BookStore.Models
@@ -17,7 +19,8 @@ namespace deepro.BookStore.Models
         public string Description { get; set; }
         public string Category { get; set; }
         [Required]
-        public string Language { get; set; }
+        public int LanguageId { get; set; }
+
         [Required(ErrorMessage ="Please enter the total pages")]
         public int? TotalPage { get; set; }
         //public DateTime? CreatedOn { get; set; }
