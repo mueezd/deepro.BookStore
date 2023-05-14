@@ -63,10 +63,13 @@
     <footer class="border-top footer text-muted text-center">
         <div class="container">
             Copyright &copy; BookStore Applecation @DateTime.Now.Year
+            <custom-email my-email="deepro@gmail.com"></custom-email>
         </div>
     </footer>
-
+    <script src="~/jquery-validate/jquery.validate.js"></script>
+    <script src="~/jquery-validate/jquery.validate.min.js"></script>
     <script src="~/lib/jquery/jquery.js"></script>
+    <script src="~/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/lib/jquery/jquery.min.js"></script>
     <script src="~/lib/jquery/jquery.slim.js"></script>
     <script src="~/lib/jquery/jquery.slim.min.js"></script>
@@ -75,6 +78,7 @@
     <script src="~/lib/twitter-bootstrap/js/bootstrap.min.js"></script>
     <script src="~/lib/twitter-bootstrap/js/bootstrap.js"></script>
     @RenderSection("scripts", required:false)
+
 </body>
 
 </html>

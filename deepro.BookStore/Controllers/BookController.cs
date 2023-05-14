@@ -88,7 +88,7 @@ namespace deepro.BookStore.Controllers
             //    new SelectListItem(){Text = "Korean", Value = "6"},
             //};
 
-            return View();
+            return View(bookModel);
         }
 
         private List<languageModel> getLanguage()

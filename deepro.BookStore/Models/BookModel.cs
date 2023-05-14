@@ -1,4 +1,5 @@
 ﻿using deepro.BookStore.Enums;
+using deepro.BookStore.Helper;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,8 +12,9 @@ namespace deepro.BookStore.Models
         [Display(Name ="Choose Date")]
         public string MyField { get; set; }
         public int Id { get; set; }
-        [StringLength(100, MinimumLength = 5)]
-        [Required(ErrorMessage ="Please Enter Title of your book")]
+        //[StringLength(100, MinimumLength = 5)]
+        //[Required(ErrorMessage ="Please Enter Title of your book")]
+        [MyCustomValidationAttribute]
         public string Title { get; set; }
         [Required(ErrorMessage ="Please Enter author name")]
         public string Author { get; set; }
