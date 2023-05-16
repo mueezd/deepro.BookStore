@@ -1,9 +1,13 @@
 ﻿using deepro.BookStore.Models;
 using deepro.BookStore.Repository;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
@@ -14,9 +18,15 @@ namespace deepro.BookStore.Controllers
     public class BookController : Controller
     {
         private readonly BookRepository _bookRepository = null;
-        public BookController(BookRepository bookRepository)
+        private readonly LanguageRepository _languageRepository = null;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+
+        public BookController(BookRepository bookRepository, 
+            LanguageRepository languageRepository, IWebHostEnvironment webHostEnvironment)
         {
             _bookRepository = bookRepository;
+            _languageRepository = languageRepository;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public async Task<ViewResult> GetAllBooks()
@@ -32,13 +42,14 @@ namespace deepro.BookStore.Controllers
             var data = await _bookRepository.GetBookById(id);
             return View(data);
         }
+
         public List<BookModel> SearchBooks(string bookName, string aothorName)
         {
             return _bookRepository.SearchBook(bookName, aothorName);
         }
 
 
-        public ViewResult AddNewBook(bool isSuccess = false, int bookId = 0)
+        public async Task<ViewResult> AddNewBook(bool isSuccess = false, int bookId = 0)
         {
             var model = new BookModel()
             {
@@ -46,17 +57,7 @@ namespace deepro.BookStore.Controllers
             };
 
 
-
-
-            //ViewBag.language = new List<SelectListItem>()
-            //{
-            //    new SelectListItem(){Text = "ddepero", Value = "1"},
-            //    new SelectListItem(){Text = "Bangal", Value = "2"},
-            //    new SelectListItem(){Text = "English", Value = "3"},
-            //    new SelectListItem(){Text = "Urdu", Value = "4"},
-            //    new SelectListItem(){Text = "Hindi", Value = "5"},
-            //    new SelectListItem(){Text = "Korean", Value = "6"},
-            //};
+            ViewBag.language = new SelectList(await _languageRepository.getLanguages(), "Id", "Name");
 
             ViewBag.IsSuccess = isSuccess;
             ViewBag.BookId = bookId;
@@ -66,8 +67,41 @@ namespace deepro.BookStore.Controllers
         [HttpPost]
         public async Task<IActionResult> AddNewBook(BookModel bookModel)
         {
+            
             if (ModelState.IsValid)
             {
+                if (bookModel.CoverPhoto != null)
+                {
+                    string folder = "books/Cover/";
+                    bookModel.CoverImageUrl = await UploadImage(folder, bookModel.CoverPhoto);
+
+                }
+
+                if (bookModel.GalleryFiles != null)
+                {
+                    string folder = "books/Gallery/";
+
+                    bookModel.Gallary = new List<GalleryModel>();
+                    foreach (var file in bookModel.GalleryFiles)
+                    {
+                        var gallery = new GalleryModel()
+                        {
+                            Name = file.Name,
+                            URL = await UploadImage(folder, file)
+                        };
+
+                        bookModel.Gallary.Add(gallery);
+ 
+                    }
+                }
+
+                if (bookModel.BookPdf != null)
+                {
+                    string folder = "books/pdf/";
+                    bookModel.BookPdfUrl = await UploadImage(folder, bookModel.BookPdf);
+
+                }
+
                 int id = await _bookRepository.AddNewBook(bookModel);
 
                 if (id > 0)
@@ -76,30 +110,23 @@ namespace deepro.BookStore.Controllers
                 }
             }
 
-            ViewBag.language = new SelectList(getLanguage(), "Id", "Text");
+            ViewBag.language = new SelectList(await _languageRepository.getLanguages(), "Id", "Name");
 
-            //ViewBag.language = new List<SelectListItem>()
-            //{
-            //    new SelectListItem(){Text = "ddepero", Value = "1"},
-            //    new SelectListItem(){Text = "Bangal", Value = "2"},
-            //    new SelectListItem(){Text = "English", Value = "3"},
-            //    new SelectListItem(){Text = "Urdu", Value = "4"},
-            //    new SelectListItem(){Text = "Hindi", Value = "5"},
-            //    new SelectListItem(){Text = "Korean", Value = "6"},
-            //};
+
 
             return View(bookModel);
         }
 
-        private List<languageModel> getLanguage()
+        private async Task<string> UploadImage(string folderPath, IFormFile file)
         {
-            return new List<languageModel>()
-            {
-                new languageModel() {Id = 1, Text = "Hindi"},
-                new languageModel() {Id = 2, Text = "English"},
-                new languageModel() {Id = 3, Text = "Dutach"},
-                new languageModel() {Id = 4, Text = "Bangla"},
-            };
+
+            folderPath += Guid.NewGuid().ToString() + "_" + file.FileName;
+
+            string serverFolder = Path.Combine(_webHostEnvironment.WebRootPath, folderPath);
+
+            await file.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
+
+            return "/" + folderPath;
         }
     }
 }

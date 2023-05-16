@@ -27,18 +27,31 @@ namespace deepro.BookStore.Repository
                 Title = model.Title,
                 LanguageId = model.LanguageId,
                 TotalPage = model.TotalPage.HasValue ? model.TotalPage.Value: 0,
-                UpdatedOn = DateTime.UtcNow
+                UpdatedOn = DateTime.UtcNow,
+                CoverImageUrl = model.CoverImageUrl,
+                BookPdfUrl = model.BookPdfUrl
             };
 
+            newBook.bookGallery = new List<BookGallery>();
+
+            foreach (var file in model.Gallary)
+            {
+                newBook.bookGallery.Add(new BookGallery()
+                {
+                    Name = file.Name,
+                    URL = file.URL
+                });
+            }
+
             await _context.Books.AddAsync(newBook);
-            await  _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             return newBook.Id;
         }
         public async Task<List<BookModel>> GetAllBooks()
         {
             var books = new List<BookModel>();
-            var allbook = await _context.Books.ToListAsync();
+            var allbook = await _context.Books.Include(x => x.language).ToListAsync();
             if (allbook?.Any() == true)
             {
                 foreach (var book in allbook)
@@ -50,8 +63,10 @@ namespace deepro.BookStore.Repository
                         Description = book.Description,
                         Id = book.Id,
                         LanguageId = book.LanguageId,
+                        Language = book.language.Name,
                         Title = book.Title,
-                        TotalPage = book.TotalPage
+                        TotalPage = book.TotalPage,
+                        CoverImageUrl= book.CoverImageUrl
                     });
                 }
             }
@@ -61,24 +76,27 @@ namespace deepro.BookStore.Repository
 
         public async Task<BookModel> GetBookById(int id)
         {
-            var book = await _context.Books.FindAsync(id);
-
-            if (book != null)
-            {
-                var bookDetails = new BookModel()
+            return await _context.Books.Where(x => x.Id == id).
+                Select(book => new BookModel()
                 {
                     Author = book.Author,
                     Category = book.Category,
                     Description = book.Description,
                     Id = book.Id,
                     LanguageId = book.LanguageId,
+                    Language = book.language.Name,
                     Title = book.Title,
-                    TotalPage = book.TotalPage
-                };
-                return bookDetails;
-
-            }
-            return null;
+                    TotalPage = book.TotalPage,
+                    CoverImageUrl= book.CoverImageUrl,
+                    Gallary = book.bookGallery.Select(g => new GalleryModel()
+                    {
+                        Id = g.Id,
+                        Name = g.Name,
+                        URL = g.URL
+                    }).ToList(),
+                    BookPdfUrl = book.BookPdfUrl
+                    
+                }).FirstOrDefaultAsync();
         }
 
         public List<BookModel> SearchBook(string title, string authorName)

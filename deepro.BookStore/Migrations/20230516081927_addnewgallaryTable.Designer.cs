@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using deepro.BookStore.Data;
 
 namespace deepro.BookStore.Migrations
 {
     [DbContext(typeof(BookStoreDbContext))]
-    partial class BookStoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230516081927_addnewgallaryTable")]
+    partial class addnewgallaryTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,6 +31,9 @@ namespace deepro.BookStore.Migrations
                     b.Property<int>("BookId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("BooksId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -37,7 +42,7 @@ namespace deepro.BookStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BookId");
+                    b.HasIndex("BooksId");
 
                     b.ToTable("BookGallery");
                 });
@@ -50,9 +55,6 @@ namespace deepro.BookStore.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Author")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BookPdfUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Category")
@@ -130,11 +132,9 @@ namespace deepro.BookStore.Migrations
 
             modelBuilder.Entity("deepro.BookStore.Data.BookGallery", b =>
                 {
-                    b.HasOne("deepro.BookStore.Data.Books", "Book")
+                    b.HasOne("deepro.BookStore.Data.Books", null)
                         .WithMany("bookGallery")
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BooksId");
                 });
 
             modelBuilder.Entity("deepro.BookStore.Data.Books", b =>

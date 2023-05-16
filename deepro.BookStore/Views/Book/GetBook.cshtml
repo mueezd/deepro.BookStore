@@ -1,43 +1,29 @@
-﻿@{
-    ViewData["Title"] = "Book Details " + Model.book.Title;
+﻿
+@{
+    ViewData["Title"] = "Book Details" + Model.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@*@model BookModel*@
-
-
+@model BookModel
 
 <div class="container">
-    <h3 class="display-4">Book Details @Model.Name</h3>
+    <h3 class="display-4">Book Details</h3>
     <div class="row">
         <div class="col-md-6">
             <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators">
-                    <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
-                    <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
-                    <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
+                    @for (int i = 0; i < Model.Gallary.Count(); i++)
+                    {
+                        <li data-target="#carouselExampleCaptions" data-slide-to="@i" class="@(i == 0 ? "active" : "")"></li>
+                    }
                 </ol>
                 <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <img src="~/images/books/sale-books-16596310.jpg" class="d-block w-100" alt="...">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5>First slide label</h5>
-                            <p>Some representative placeholder content for the first slide.</p>
+                    @for (int i = 0; i < Model.Gallary.Count(); i++)
+                    {
+                        <div class="@(i == 0 ? "carousel-item active" : "carousel-item")">
+                            <img class="d-block w-100" src="@Model.Gallary[i].URL" alt="@Model.Gallary[i].Name">
                         </div>
-                    </div>
-                    <div class="carousel-item">
-                        <img src="~/images/books/istockphoto-496878713-170667a.jpg" class="d-block w-100" alt="...">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5>Second slide label</h5>
-                            <p>Some representative placeholder content for the second slide.</p>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <img src="~/images/books/istockphoto-496878713-170667a.jpg" class="d-block w-100" alt="...">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5>Third slide label</h5>
-                            <p>Some representative placeholder content for the third slide.</p>
-                        </div>
-                    </div>
+                    }
                 </div>
                 <button class="carousel-control-prev" type="button" data-target="#carouselExampleCaptions" data-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -52,36 +38,56 @@
         <div class="col-md-6">
             <div class="row">
                 <div class="col-md-12">
-                    <h1>@Model.book.Title</h1>
+                    <h1>@Model.Title</h1>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12 text-primary">
                     <span class="label label-primary">By: </span>
-                    <span class="monospaced">@Model.book.Author</span>
+                    <span class="monospaced">@Model.Author</span>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-12">
                     <p class="description">
-                        @Model.book.Description
+                        @Model.Description
                     </p>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-4">
-                    <button class="btn btn-outline-primary">Read Now</button>
+                    <a class="btn btn-outline-primary" data-toggle="modal" data-target="#exampleModal">Read Now</a>
                 </div>
             </div>
             <hr />
 
             <ul class="list-group">
-                <li class="list-group-item"><span class="font-weight-bold">Catagory - </span>@Model.book.Category</li>
-                <li class="list-group-item"><span class="font-weight-bold">Total Page - </span>@Model.book.TotalPage</li>
-                <li class="list-group-item"><span class="font-weight-bold">Language - </span>@Model.book.LanguageId</li>
-            </ul> 
+                <li class="list-group-item"><span class="font-weight-bold">Catagory - </span>@Model.Category</li>
+                <li class="list-group-item"><span class="font-weight-bold">Total Page - </span>@Model.TotalPage</li>
+                <li class="list-group-item"><span class="font-weight-bold">Language - </span>@Model.Language</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <embed src="@Model.BookPdfUrl" class="w-100" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
         </div>
     </div>
 </div>
@@ -97,13 +103,13 @@
                 <div class="card mb-4 shadow-sm">
                     <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns=""></svg>
                     <div class="card-body">
-                        <h3 class="card-title">@Model.book.Title</h3>
-                        <p class="card-text">@Model.book.Description</p>
+                        <h3 class="card-title">@Model.Title</h3>
+                        <p class="card-text">@Model.Description</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
-                                <a href="/book/getbook/@Model.book.Id" class="btn btn-sm btn-outline-secondary">View Details</a>
+                                <a href="/book/getbook/@Model.Id" class="btn btn-sm btn-outline-secondary">View Details</a>
                             </div>
-                            <small class="text-muted">@Model.book.Author</small>
+                            <small class="text-muted">@Model.Author</small>
                         </div>
                     </div>
                 </div>
@@ -112,3 +118,4 @@
 
     </div>
 </div>
+

@@ -17,12 +17,23 @@
         </button>
         </div>
     }
+
+    <div class="d-flex justify-content-center">
+        <div class="spinner-border" role="status" id="myLoader" style="display:none">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
     
-    <form method="post" asp-action="AddNewBook" asp-controller="Book">
+    <form method="post" enctype="multipart/form-data"
+                        data-ajax="true" 
+                        data-ajax-complete="myComplete" 
+                        data-ajax-success="mySuccess" 
+                        data-ajax-failure="myfailure"
+          data-ajax-loading="#myLoader" asp-action="AddNewBook" asp-controller="Book">
         <div asp-validation-summary="All" class="text-danger"></div>
         <div class="form-group">
             <label asp-for="LanguageId"></label>
-            <select asp-for="LanguageId" class="form-control" asp-items="Html.GetEnumSelectList<LanguaageEnum>()">
+            <select asp-for="LanguageId" class="form-control" asp-items="ViewBag.language">
                 <option>Please choose your language</option>
             </select>
             <span asp-validation-for="LanguageId" class="text-danger"></span>
@@ -49,10 +60,53 @@
             <label asp-for="TotalPage"></label>
             <input asp-for="TotalPage" class="form-control" />
             <span asp-validation-for="TotalPage" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="CoverPhoto"></label>
+            <div class="custom-file">
+                <input asp-for="CoverPhoto" class="custom-file-input" id="customFile">
+                <label class="custom-file-label" for="customFile">Choose file</label>
+            </div>
+            <span asp-validation-for="CoverPhoto" class="text-danger"></span>
+        </div>
 
+        <div class="form-group">
+            <label asp-for="GalleryFiles"></label>
+            <div class="custom-file">
+                <input asp-for="GalleryFiles" class="custom-file-input" id="customFile">
+                <label class="custom-file-label" for="customFile">Choose file</label>
+            </div>
+            <span asp-validation-for="GalleryFiles" class="text-danger"></span>
+        </div>
+
+
+        <div class="form-group">
+            <label asp-for="BookPdf"></label>
+            <div class="custom-file">
+                <input asp-for="BookPdf" class="custom-file-input" id="customFile">
+                <label class="custom-file-label" for="customFile">Choose file</label>
+            </div>
+            <span asp-validation-for="BookPdf" class="text-danger"></span>
         </div>
         <div class="form-group">
             <input type="submit" value="Add Book" class="btn btn-primary" />
         </div>
     </form>
 </div>
+
+
+@section scripts{
+<script>
+        function myComplete(data){
+            alert("i am form complete");
+        }
+
+        function mySuccess(data) {
+            alert("i am form success");
+        }
+
+        function myfailure(data) {
+            alert("I am form Failure");
+        }
+</script>
+}
