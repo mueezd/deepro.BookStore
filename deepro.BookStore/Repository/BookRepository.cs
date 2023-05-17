@@ -73,6 +73,23 @@ namespace deepro.BookStore.Repository
             return books;
         }
 
+        public async Task<List<BookModel>> GetTopBooksAsync(int count)
+        {
+            return await _context.Books
+                .Select(book => new BookModel()
+                {
+                    Author = book.Author,
+                    Category = book.Category,
+                    Description = book.Description,
+                    Id = book.Id,
+                    LanguageId = book.LanguageId,
+                    Language = book.language.Name,
+                    Title = book.Title,
+                    TotalPage = book.TotalPage,
+                    CoverImageUrl = book.CoverImageUrl
+                }).Take(count).ToListAsync();
+        }
+
 
         public async Task<BookModel> GetBookById(int id)
         {
