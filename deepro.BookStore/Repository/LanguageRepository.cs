@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace deepro.BookStore.Repository
 {
-    public class LanguageRepository
+    public class LanguageRepository : ILanguageRepository
     {
         private readonly BookStoreDbContext _context = null;
         public LanguageRepository(BookStoreDbContext context)
@@ -20,11 +20,11 @@ namespace deepro.BookStore.Repository
         {
             return await _context.Languages.Select(x => new languageModel()
             {
-               Id= x.Id,
-               Name= x.Name,
-               Description= x.Description
+                Id = x.Id,
+                Name = x.Name,
+                Description = x.Description
             }).ToListAsync();
-    
+
         }
     }
 }

@@ -1,6 +1,7 @@
-﻿@*@{
+﻿@{
     ViewData["Title"] = "Home";
-}*@
+}
+@inject deepro.BookStore.Repository.IBookRepository _bookRepository
 <section class="jumbotron text-center"> 
     <div class="container">
         <h1>Welcome to BookStore Appliection </h1>
@@ -15,6 +16,12 @@
         <p>
             <a href="#" class="btn btn-primary my-2">Search Books</a>
         </p>
+
+        @foreach (var item in await _bookRepository.GetAllBooks())
+        {
+            <h1>@item.Title</h1>
+        }
+
     </div>
 </section>
 
@@ -23,11 +30,11 @@
         <div class="container">
             <h3 class="h3">Top Books</h3>
 
-@*            @await Component.InvokeAsync("TopBooks")
-*@
-            <vc:top-books count="6">
+            @await Component.InvokeAsync("TopBooks")
 
-            </vc:top-books>
+ @*           <vc:top-books count="6">
+
+            </vc:top-books>*@
 
 
 

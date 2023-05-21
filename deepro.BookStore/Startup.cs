@@ -1,4 +1,4 @@
-using deepro.BookStore.Data;
+ using deepro.BookStore.Data;
 using deepro.BookStore.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,8 +27,8 @@ namespace deepro.BookStore
 #if DEBUG
             services.AddRazorPages().AddRazorRuntimeCompilation();
 #endif
-            services.AddScoped<BookRepository, BookRepository>();
-            services.AddScoped<LanguageRepository, LanguageRepository>();
+            services.AddScoped<IBookRepository, BookRepository>();
+            services.AddScoped<ILanguageRepository, LanguageRepository>();
 
         }
 
@@ -48,7 +48,7 @@ namespace deepro.BookStore
 
             //});
 
-            //app.Use(async (context, next) =>
+            //app.Use(async (context, next) Routing, Attribute routing, Route constraints 
             //{
             //    await context.Response.WriteAsync("\tHello form Second MiddleWare");
             //    await next();

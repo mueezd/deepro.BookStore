@@ -1,5 +1,6 @@
 ﻿@using deepro.BookStore.Enums
 @model BookModel
+@inject deepro.BookStore.Repository.ILanguageRepository _languageRepository
 
 @{
     ViewData["Title"] = "Add New Book";
@@ -33,7 +34,7 @@
         <div asp-validation-summary="All" class="text-danger"></div>
         <div class="form-group">
             <label asp-for="LanguageId"></label>
-            <select asp-for="LanguageId" class="form-control" asp-items="ViewBag.language">
+            <select asp-for="LanguageId" class="form-control" asp-items="(await _languageRepository.getLanguages()).Select(x => new SelectListItem(){ Text = x.Name, Value = x.Id.ToString()})">
                 <option>Please choose your language</option>
             </select>
             <span asp-validation-for="LanguageId" class="text-danger"></span>

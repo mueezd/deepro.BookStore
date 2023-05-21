@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace deepro.BookStore.Repository
 {
-    public class BookRepository
+    public class BookRepository : IBookRepository
     {
         private readonly BookStoreDbContext _context = null;
 
@@ -26,7 +26,7 @@ namespace deepro.BookStore.Repository
                 Description = model.Description,
                 Title = model.Title,
                 LanguageId = model.LanguageId,
-                TotalPage = model.TotalPage.HasValue ? model.TotalPage.Value: 0,
+                TotalPage = model.TotalPage.HasValue ? model.TotalPage.Value : 0,
                 UpdatedOn = DateTime.UtcNow,
                 CoverImageUrl = model.CoverImageUrl,
                 BookPdfUrl = model.BookPdfUrl
@@ -66,7 +66,7 @@ namespace deepro.BookStore.Repository
                         Language = book.language.Name,
                         Title = book.Title,
                         TotalPage = book.TotalPage,
-                        CoverImageUrl= book.CoverImageUrl
+                        CoverImageUrl = book.CoverImageUrl
                     });
                 }
             }
@@ -104,7 +104,7 @@ namespace deepro.BookStore.Repository
                     Language = book.language.Name,
                     Title = book.Title,
                     TotalPage = book.TotalPage,
-                    CoverImageUrl= book.CoverImageUrl,
+                    CoverImageUrl = book.CoverImageUrl,
                     Gallary = book.bookGallery.Select(g => new GalleryModel()
                     {
                         Id = g.Id,
@@ -112,13 +112,18 @@ namespace deepro.BookStore.Repository
                         URL = g.URL
                     }).ToList(),
                     BookPdfUrl = book.BookPdfUrl
-                    
+
                 }).FirstOrDefaultAsync();
         }
 
         public List<BookModel> SearchBook(string title, string authorName)
         {
             return null;
+        }
+
+        public string GetAppName()
+        {
+            return "Book Store Application";
         }
 
     }
