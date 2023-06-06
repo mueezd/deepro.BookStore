@@ -1,6 +1,7 @@
 ﻿using deepro.BookStore.Data;
 using deepro.BookStore.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,10 +13,11 @@ namespace deepro.BookStore.Repository
     public class BookRepository : IBookRepository
     {
         private readonly BookStoreDbContext _context = null;
-
-        public BookRepository(BookStoreDbContext context)
+        private readonly IConfiguration _configuration; 
+        public BookRepository(BookStoreDbContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
         public async Task<int> AddNewBook(BookModel model)
         {
@@ -123,7 +125,7 @@ namespace deepro.BookStore.Repository
 
         public string GetAppName()
         {
-            return "Book Store Application";
+            return _configuration["AppName"];
         }
 
     }
